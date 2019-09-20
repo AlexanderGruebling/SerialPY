@@ -1,35 +1,34 @@
-# import tkinter GUI library
-from tkinter import *
+import sys
 import usb.core
 import usb.util
+from tkinter import *
 
-# find our device
-dev = usb.core.find()
 
-# was it found?
-if dev is None:
-    raise ValueError('Device not found')
+dev = usb.core.find(idVendor=0x0461,idProduct=0x4d0f)
+interface = 0
+print(dev[0][(0,0)][0])
+endpoint = dev[0][(0,0)][0]
 
-# set the active configuration. With no arguments, the first
-# configuration will be the active one
 dev.set_configuration()
+while True:
+    try:
+        data = dev.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
+        print(data)
+    except usb.core.USBError as e:
+        if e.args == ('Operation timed out',):
+            continue
+# release the device
+usb.util.release_interface(dev, interface)
+usb.util.dispose_resources(dev)
+# reattach the device to the OS kernel
+# dev.attach_kernel_driver(interface)
 
-# get an endpoint instance
-cfg = dev.get_active_configuration()
 
-usb.util.find_descriptor(cfg, True, 1)
-#intf = cfg[(0,0)]
 
-#ep = usb.util.find_descriptor(dev, 1)
-
-#assert ep is not None
-
-# write the data
-# ep.write('test')
 window = Tk()
 
 # set tkinter window name
-window.title("Py Project")
+window.title("PyTester")
 
 # set tkinter window size
 window.geometry('350x200')
