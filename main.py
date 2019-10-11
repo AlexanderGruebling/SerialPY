@@ -2,6 +2,9 @@ import sys
 import usb.core
 import usb.util
 from tkinter import *
+import _thread
+import threading
+from Endpoint import Endpoint
 
 # global Settings
 idVendor = 0x0461
@@ -11,25 +14,15 @@ dataBits = 8
 stopBits = 1
 parity = 1
 
+endpoint = Endpoint(idVendor, idProduct)
+#endpoint.readFromSerialPort(0)
 
-window = Tk()
+# _thread.start_new_thread(endpoint.readFromSerialPort)
 
-# set tkinter window name
-window.title("PyTester")
+thread1 = threading.Thread(target=endpoint.readFromSerialPort,args=(0,))
+thread1.start()
 
-# set tkinter window size
-window.geometry('350x200')
-
-# activate GUI Loop
-window.mainloop()
-
-def getUsbEnpoints():
-    dev = usb.core.find(idVendor=idVendor, idProduct=idProduct)
-    endpoint = dev[0][(0, 0)][0]
-    return endpoint
-
-
-
+print("test")
 #dev = usb.core.find(idVendor=idVendor, idProduct=idProduct) #idVendor=0x0461,idProduct=0x4d0f
 #interface = 0
 #print(dev[0][(0,0)][0])
