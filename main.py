@@ -3,8 +3,29 @@ import usb.core
 import usb.util
 from tkinter import *
 
+# global Settings
+idVendor = 0x0461
+idProduct = 0x4d0f
+baudRate = 9600
+dataBits = 8
+stopBits = 1
+parity = 1
 
-dev = usb.core.find(idVendor=0x0461,idProduct=0x4d0f)
+
+window = Tk()
+
+# set tkinter window name
+window.title("PyTester")
+
+# set tkinter window size
+window.geometry('350x200')
+
+# activate GUI Loop
+window.mainloop()
+
+
+
+dev = usb.core.find(idVendor=idVendor, idProduct=idProduct) #idVendor=0x0461,idProduct=0x4d0f
 interface = 0
 print(dev[0][(0,0)][0])
 endpoint = dev[0][(0,0)][0]
@@ -25,15 +46,3 @@ usb.util.dispose_resources(dev)
 
 
 
-window = Tk()
-
-# set tkinter window name
-window.title("PyTester")
-
-# set tkinter window size
-window.geometry('350x200')
-
-
-
-# activate GUI Loop
-window.mainloop()
