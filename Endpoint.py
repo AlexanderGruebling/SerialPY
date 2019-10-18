@@ -19,7 +19,6 @@ class Endpoint(threading.Thread):
     def readFromSerialPort(self, interface=0):
         # p rint(dev[0][(0,0)][0])
         # data = ""
-
         endpoint = self.dev[0][(0, 0)][0]
 
         self.dev.set_configuration()

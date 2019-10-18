@@ -2,8 +2,9 @@ import sys
 import usb.core
 import usb.util
 from tkinter import *
-#import _thread
+import _thread
 import threading
+from Operations import to_hex, to_ascii
 from Endpoint import Endpoint
 
 # global Settings
@@ -35,6 +36,8 @@ while True:
     continue
 
 print("test")
+print(to_hex(10))
+print(to_ascii(97))
 #dev = usb.core.find(idVendor=idVendor, idProduct=idProduct) #idVendor=0x0461,idProduct=0x4d0f
 #interface = 0
 #print(dev[0][(0,0)][0])
