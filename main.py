@@ -2,7 +2,7 @@ import sys
 import usb.core
 import usb.util
 from tkinter import *
-import _thread
+#import _thread
 import threading
 from Endpoint import Endpoint
 
@@ -14,13 +14,25 @@ dataBits = 8
 stopBits = 1
 parity = 1
 
+dataList = []
+
 endpoint = Endpoint(idVendor, idProduct)
 #endpoint.readFromSerialPort(0)
 
 # _thread.start_new_thread(endpoint.readFromSerialPort)
 
-thread1 = threading.Thread(target=endpoint.readFromSerialPort,args=(0,))
+dataList.append("2019")
+
+thread1 = threading.Thread(target=endpoint.readFromSerialPort, args=(0,))
 thread1.start()
+
+
+
+
+while True:
+    dataList = endpoint.getReadData()
+    print(dataList)
+    continue
 
 print("test")
 #dev = usb.core.find(idVendor=idVendor, idProduct=idProduct) #idVendor=0x0461,idProduct=0x4d0f

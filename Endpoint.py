@@ -19,13 +19,16 @@ class Endpoint(threading.Thread):
     def readFromSerialPort(self, interface=0):
         # p rint(dev[0][(0,0)][0])
         # data = ""
+
         endpoint = self.dev[0][(0, 0)][0]
 
         self.dev.set_configuration()
         while True:
             try:
                 temp = self.dev.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
-                print(temp)
+                #print(temp)
+                #dataList.append(temp)
+                #print(main.dataList)
                 self.data.append(temp)
             except usb.core.USBError as e:
                 print(e)
@@ -36,5 +39,7 @@ class Endpoint(threading.Thread):
         usb.util.dispose_resources(self.dev)
         #return data
         # reattach the device to the OS kernel
-        # dev.attach_kernel_driver(interface)
+        self.dev.attach_kernel_driver(interface)
 
+    def getReadData(self):
+        return self.data
