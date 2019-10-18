@@ -49,7 +49,7 @@ class StartPage(tk.Frame):
                             command=self.client_exit)
         button3.place(x=0, y=0)
         button3.grid(row=3, column=0, padx='5', pady='5', sticky='ew')
-        ##button3.pack()
+
 
     def client_exit(self):
         exit()
