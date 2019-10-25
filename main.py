@@ -8,8 +8,8 @@ from Operations import to_hex, to_ascii
 from Endpoint import Endpoint
 
 # global Settings
-idVendor = 0x0461
-idProduct = 0x4d0f
+idVendor = 0x046d
+idProduct = 0xc077
 baudRate = 9600
 dataBits = 8
 stopBits = 1
@@ -24,14 +24,14 @@ endpoint = Endpoint(idVendor, idProduct)
 
 dataList.append("2019")
 
-thread1 = threading.Thread(target=endpoint.readFromSerialPort, args=(0,))
+thread1 = threading.Thread(target=endpoint.read_from_serial_port, args=(0,))
 thread1.start()
 
 
 
 
 while True:
-    dataList = endpoint.getReadData()
+    dataList = endpoint.get_read_data()
     print(dataList)
     continue
 

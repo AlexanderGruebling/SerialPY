@@ -39,5 +39,5 @@ class Endpoint(threading.Thread):
         # reattach the device to the OS kernel
         self.dev.attach_kernel_driver(interface)
 
-    def getReadData(self):
+    def get_read_data(self):
         return self.data
