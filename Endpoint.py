@@ -5,7 +5,7 @@ import threading
 
 class Endpoint(threading.Thread):
 
-    def getUsbPort(self):
+    def get_usb_port(self):
         return usb.core.find(idVendor=self.idVendor, idProduct=self.idProduct)
 
     def __init__(self, idVendor, idProduct):
@@ -13,10 +13,9 @@ class Endpoint(threading.Thread):
         self.idVendor = idVendor
         self.idProduct = idProduct
         self.data = []
-        self.dev = self.getUsbPort()
+        self.dev = self.get_usb_port()
 
-
-    def readFromSerialPort(self, interface=0):
+    def read_from_serial_port(self, interface=0):
         # p rint(dev[0][(0,0)][0])
         # data = ""
         endpoint = self.dev[0][(0, 0)][0]

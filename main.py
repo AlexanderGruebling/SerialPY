@@ -20,7 +20,7 @@ endpoint = Endpoint(idVendor, idProduct)
 
 # _thread.start_new_thread(endpoint.readFromSerialPort)
 
-thread1 = threading.Thread(target=endpoint.readFromSerialPort, args=(0,))
+thread1 = threading.Thread(target=endpoint.read_from_serial_port, args=(0,))
 thread1.start()
 
 print("test")
