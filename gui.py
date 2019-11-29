@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Menu
 from tkinter import Canvas
 LARGE_FONT = ("Verdana", 12)
 
@@ -141,10 +141,28 @@ class Senden(tk.Frame):
                             command=lambda: controller.show_frame(Empfangen))
         self.button2.grid(row=0, column=2, padx='5', pady='5', sticky='ew')
         self.button3 = tk.Button(self, text="Abschicken")
-        self.button3.grid(row=2, column=0, padx='5', pady='5', sticky='ew')
+        self.button3.grid(row=2, column=0, padx='5', pady=(5,50), sticky='ew')
         self.button4 = tk.Button(self, text="Color-Theme wechseln",
                                  command=self.colorChange)
-        self.button4.grid(row=2, column=1, padx='5', pady='5', sticky='ew')
+        self.button4.grid(row=2, column=1, padx='5', pady=(5,50), sticky='ew')
+        self.separator = ttk.Separator(self, orient="horizontal")
+        self.separator.grid(row=4, column=1, sticky="we")
+        self.label3 = tk.Label(self, text="Baud-Rate:")
+        self.label3.grid(row=5, column=0, padx='5', pady='5', sticky='ew')
+        self.label3.config(height=1, width=5)
+        self.e2 = ttk.Entry(self, width=1)
+        self.e2.grid(row=5, column=1, padx='5', pady='5', sticky='ew')
+        self.label4 = tk.Label(self, text="Stopbits:")
+        self.label4.grid(row=5, column=2, padx='5', pady='5', sticky='ew')
+        self.label4.config(height=1, width=5)
+        self.e3 = ttk.Entry(self, width=5)
+        self.e3.grid(row=5, column=3, padx='5', pady='5', sticky='ew')
+        self.label5 = tk.Label(self, text="Databits:")
+        self.label5.grid(row=5, column=4, padx='5', pady='5', sticky='ew')
+        self.label5.config(height=1, width=5)
+        self.e4 = ttk.Entry(self, width=5)
+        self.e4.grid(row=5, column=5, padx='5', pady='5', sticky='ew')
+
 
     def colorChange(self):
         if self.white == True:
@@ -168,8 +186,11 @@ class Senden(tk.Frame):
 
 
 
+
+
+
 app = SerialPy()
-app.geometry('300x200')
+##app.geometry('300x200')
 app.resizable(width=False, height=False)
 app.configure(bg="black")
 app.mainloop()
