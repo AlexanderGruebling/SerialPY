@@ -36,7 +36,7 @@ class StartPage(tk.Frame):
         self.white = True
         tk.Frame.__init__(self, parent)
         self.label = tk.Label(self, text="Startseite", font=LARGE_FONT)
-        self.label.grid(row=0, column=0, padx='5', pady='5', sticky='ew')
+        self.label.grid(row=0, column=0, padx='100', pady='5', sticky='ew')
         self.label.config(height=1,width=25)
         self.button = tk.Button(self, text="Empfangen",
                            command=lambda: controller.show_frame(Empfangen))
@@ -88,10 +88,21 @@ class Empfangen(tk.Frame):
                            command=lambda: controller.show_frame(StartPage))
 
         self.button1.grid(row=0, column=1, padx='20', pady='5', sticky='ew')
-        self.nachricht = tk.Label(self, text="abc", font=LARGE_FONT)
-        self.nachricht.grid(row=1, column=0, padx='5', pady='5', sticky='ew')
-        self.nachricht2 = tk.Label(self, text="def", font=LARGE_FONT)
-        self.nachricht2.grid(row=2, column=1, padx='5', pady='5', columnspan="2", sticky='ew')
+        self.nachrichten = tk.Frame(self)
+        self.nachrichten.grid(row=1, column=0,)
+        testdaten = ["ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWX", "YZ"]
+        for i in range(len(testdaten)):
+            print(testdaten[i])
+            row = i
+            column = 0
+            if i%2==0 :
+                column = 0
+            else:
+                column = 1
+            name = 'label{i}'
+            self.name = tk.Label(self.nachrichten, text={testdaten[i]}, font=LARGE_FONT)
+            self.name.grid(row=row, column=column)
+
         self.button2 = tk.Button(self, text="Senden",
                             command=lambda: controller.show_frame(Senden))
         self.button2.grid(row=0, column=2, padx='5', pady='5', sticky='ew')
@@ -145,8 +156,8 @@ class Senden(tk.Frame):
         self.button4 = tk.Button(self, text="Color-Theme wechseln",
                                  command=self.colorChange)
         self.button4.grid(row=2, column=1, padx='5', pady=(5,50), sticky='ew')
-        self.separator = ttk.Separator(self, orient="horizontal")
-        self.separator.grid(row=4, column=1, sticky="we")
+        #self.separator = ttk.Separator(self, orient="horizontal")
+        #self.separator.grid(row=4, column=1, sticky="we")
         self.label3 = tk.Label(self, text="Baud-Rate:")
         self.label3.grid(row=5, column=0, padx='5', pady='5', sticky='ew')
         self.label3.config(height=1, width=5)
@@ -173,6 +184,9 @@ class Senden(tk.Frame):
             self.button4.configure(bg="#212121", fg="white")
             self.label.configure(bg="#303030", fg="white")
             self.label2.configure(bg="#303030", fg="white")
+            self.label3.configure(bg="#303030", fg="white")
+            self.label4.configure(bg="#303030", fg="white")
+            self.label5.configure(bg="#303030", fg="white")
             self.white = False
         elif self.white == False:
             Senden.configure(self, background='white')
@@ -182,6 +196,9 @@ class Senden(tk.Frame):
             self.button4.configure(bg="white", fg="black")
             self.label.configure(bg="white", fg="black")
             self.label2.configure(bg="white", fg="black")
+            self.label3.configure(bg="white", fg="black")
+            self.label4.configure(bg="white", fg="black")
+            self.label5.configure(bg="white", fg="black")
             self.white = True
 
 
@@ -190,7 +207,8 @@ class Senden(tk.Frame):
 
 
 app = SerialPy()
-##app.geometry('300x200')
+app.title("SerialPy")
+#app.geometry('1920x1080')
 app.resizable(width=False, height=False)
 app.configure(bg="black")
 app.mainloop()
