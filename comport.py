@@ -23,23 +23,14 @@ class ComPort(threading.Thread):
         self.ser.open()
 
     def read_from_com_port(self):
-       # self.ser.open()
-        print('test')
         RxData = ''
         while True:
-            print('test')
             try:
                 temp = self.ser.readline()
                 RxData += str(temp)
-
-                # print (RxData)
-                # print(temp)
-
                 self.data += RxData
-                # self.data.append(RxData)
             except SyntaxError as e:
                 print(e)
-            # if e.args == ('Operation timed out',):
             continue
 
     def getReadData(self):

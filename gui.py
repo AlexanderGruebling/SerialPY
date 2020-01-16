@@ -1,10 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, Menu
 from tkinter import Canvas
+from comport import ComPort
+import threading
+import serial
 LARGE_FONT = ("Verdana", 12)
 
 
 class SerialPy(tk.Tk):
+    com1data = []
+    com1 = serial.Serial('COM4', 9600, timeout=0.5)
+    com2 = serial.Serial('COM6', 9600, timeout=0.5)
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -26,7 +32,27 @@ class SerialPy(tk.Tk):
 
     def show_frame(self, cont):
         frame = self.frames[cont]
+        print(cont.__name__)
         frame.tkraise()
+        if cont.__name__ == 'Empfangen':
+            self.ready()
+
+    def ready(self):
+        baudRate = 9600
+        dataBits = 8
+        stopBits = 2
+        parity = 1
+        '''
+        com1 = ComPort('COM4', baudRate, dataBits, 1, stopBits, 'N')
+        thread1 = threading.Thread(target=com1.read_from_com_port, args=())
+        thread1.start()
+        com2 = ComPort('COM2', baudRate, dataBits, 1, stopBits, 'N')
+        thread2 = threading.Thread(target=com2.read_from_com_port, args=())
+        thread2.start()
+        '''
+        #com1 = serial.Serial('COM4', 9600, timeout=0.5)
+
+
 
 
 class StartPage(tk.Frame):
@@ -90,8 +116,7 @@ class Empfangen(tk.Frame):
         self.button1.grid(row=0, column=1, padx='20', pady='5', sticky='ew')
         self.nachrichten = tk.Frame(self)
         self.nachrichten.grid(row=1, column=0,)
-        testdaten = ["ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWX", "YZ"]
-        testdaten2 = [("ABC","A"),("123","B"),("DEF","B"),("XYZ","A")]
+        print(testdaten2)
         for i in range(len(testdaten2)):
             print("ABC")
             column = 0
@@ -101,7 +126,7 @@ class Empfangen(tk.Frame):
             if testdaten2[i][1] == "B":
                 print("rechts")
                 column = 1
-            self.name = tk.Label(self.nachrichten, text={testdaten[i]}, font=LARGE_FONT)
+            self.name = tk.Label(self.nachrichten, text={testdaten2[i]}, font=LARGE_FONT)
             self.name.grid(row=i, column=column)
             #for i in range(len(testdaten)):
                 #print(testdaten[i])
@@ -120,9 +145,26 @@ class Empfangen(tk.Frame):
         self.button3 = tk.Button(self, text="Color-Theme wechseln",
                                  command=self.colorChange)
         self.button3.grid(row=3, column=0, padx='5', pady='5', sticky='ew')
+        self.button4 = tk.Button(self, text="Refresh",
+                                 command=self.refresh)
+        self.button4.grid(row=4, column=0, padx='5', pady='5', sticky='ew')
+        self.refresh()
 
+    def refresh(self):
+        print(testdaten2)
+        for i in range(len(testdaten2)):
+            print("ABC")
+            column = 0
+            if testdaten2[i][1] == "A":
+                print("links")
+                column = 0
+            if testdaten2[i][1] == "B":
+                print("rechts")
+                column = 1
+            self.name = tk.Label(self.nachrichten, text={testdaten2[i]}, font=LARGE_FONT)
 
-
+            self.name.grid(row=i, column=column)
+        self.after(500, self.refresh)
 
     def colorChange(self):
         if self.white == True:
@@ -213,13 +255,25 @@ class Senden(tk.Frame):
             self.white = True
 
 
+def read(com1, com2):
+    com1data = com1.readline()
+    com2data = com2.readline()
+    if com1data is not b'':
+        testdaten2.append((str(com1data), "A"))
+        print(testdaten2)
+    if com2data is not b'':
+        testdaten2.append((str(com2data), "B"))
+        print(testdaten2)
 
 
-
-
+#testdaten2 = [("ABC","A"),("123","B"),("DEF","B"),("XYZ","A")]
+testdaten2 = []
 app = SerialPy()
 app.title("SerialPy")
 #app.geometry('1920x1080')
-app.resizable(width=False, height=False)
+app.resizable(width=True, height=True)
 app.configure(bg="black")
-app.mainloop()
+while True:
+    # app.update_idletasks()
+    read(SerialPy.com1, SerialPy.com2)
+    app.update()

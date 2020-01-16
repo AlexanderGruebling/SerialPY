@@ -12,7 +12,7 @@ parity = 1
 
 dataList = []
 
-serial = ComPort('COM4', baudRate, dataBits, 1, stopBits, 'N')
+serial = ComPort('COM1', baudRate, dataBits, 1, stopBits, 'N')
 thread1 = threading.Thread(target=serial.read_from_com_port, args=())
 print('kek')
 thread1.start()
