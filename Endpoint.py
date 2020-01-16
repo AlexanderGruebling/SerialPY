@@ -1,6 +1,5 @@
 import sys
-import usb.core
-import usb.util
+import serial
 import threading
 
 class Endpoint(threading.Thread):
@@ -10,10 +9,13 @@ class Endpoint(threading.Thread):
 
     def __init__(self, idVendor, idProduct):
         threading.Thread.__init__(self)
-        self.idVendor = idVendor
-        self.idProduct = idProduct
-        self.data = ''
-        self.dev = self.getUsbPort()
+        ser = serial.Serial()
+        ser.port = 'COM4'
+        ser.baudrate = 9600
+        ser.timeout = 1
+        ser.bytesize = serial.EIGHTBITS
+        ser.stopbits = serial.STOPBITS_ONE
+        ser.parity = serial.PARITY_NONE
 
 
     def readFromSerialPort(self, interface=0):
