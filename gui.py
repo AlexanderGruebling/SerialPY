@@ -91,17 +91,28 @@ class Empfangen(tk.Frame):
         self.nachrichten = tk.Frame(self)
         self.nachrichten.grid(row=1, column=0,)
         testdaten = ["ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWX", "YZ"]
-        for i in range(len(testdaten)):
-            print(testdaten[i])
-            row = i
+        testdaten2 = [("ABC","A"),("123","B"),("DEF","B"),("XYZ","A")]
+        for i in range(len(testdaten2)):
+            print("ABC")
             column = 0
-            if i%2==0 :
+            if testdaten2[i][1] == "A":
+                print("links")
                 column = 0
-            else:
+            if testdaten2[i][1] == "B":
+                print("rechts")
                 column = 1
-            name = 'label{i}'
             self.name = tk.Label(self.nachrichten, text={testdaten[i]}, font=LARGE_FONT)
-            self.name.grid(row=row, column=column)
+            self.name.grid(row=i, column=column)
+            #for i in range(len(testdaten)):
+                #print(testdaten[i])
+                #row = i
+                #if i % 2 == 0:
+                    #column = 0
+                #else:
+                    #column = 1
+                #name = 'label{i}'
+                #self.name = tk.Label(self.nachrichten, text={testdaten[i]}, font=LARGE_FONT)
+                #self.name.grid(row=row, column=column)
 
         self.button2 = tk.Button(self, text="Senden",
                             command=lambda: controller.show_frame(Senden))
