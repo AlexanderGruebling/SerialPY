@@ -1,16 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, Menu
-from tkinter import Canvas
-from comport import ComPort
-import threading
+from tkinter import ttk
 import serial
-LARGE_FONT = ("Verdana", 12)
 
+LARGE_FONT = ("Verdana", 12)
+com1 = None
+com2 = None
 
 class SerialPy(tk.Tk):
-    com1data = []
-    com1 = serial.Serial('COM4', 9600, timeout=0.5)
-    com2 = serial.Serial('COM6', 9600, timeout=0.5)
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -116,28 +112,15 @@ class Empfangen(tk.Frame):
         self.button1.grid(row=0, column=1, padx='20', pady='5', sticky='ew')
         self.nachrichten = tk.Frame(self)
         self.nachrichten.grid(row=1, column=0,)
-        print(testdaten2)
+
         for i in range(len(testdaten2)):
-            print("ABC")
             column = 0
             if testdaten2[i][1] == "A":
-                print("links")
                 column = 0
             if testdaten2[i][1] == "B":
-                print("rechts")
                 column = 1
             self.name = tk.Label(self.nachrichten, text={testdaten2[i]}, font=LARGE_FONT)
             self.name.grid(row=i, column=column)
-            #for i in range(len(testdaten)):
-                #print(testdaten[i])
-                #row = i
-                #if i % 2 == 0:
-                    #column = 0
-                #else:
-                    #column = 1
-                #name = 'label{i}'
-                #self.name = tk.Label(self.nachrichten, text={testdaten[i]}, font=LARGE_FONT)
-                #self.name.grid(row=row, column=column)
 
         self.button2 = tk.Button(self, text="Senden",
                             command=lambda: controller.show_frame(Senden))
@@ -180,8 +163,12 @@ class Empfangen(tk.Frame):
         self.label8.config(height=1, width=5)
         self.e7 = ttk.Entry(self, width=5)
         self.e7.grid(row=6, column=5, padx='5', pady='5', sticky='ew')
+
+        self.button5 = tk.Button(self, text="Submit", command=self.createCOMs)
+        self.button5.grid(row=6, column=6, padx=5, pady=5, sticky='ew')
+
     def refresh(self):
-        print(testdaten2)
+
         for i in range(len(testdaten2)):
             print("ABC")
             column = 0
@@ -195,6 +182,22 @@ class Empfangen(tk.Frame):
 
             self.name.grid(row=i, column=column)
         self.after(500, self.refresh)
+
+    def createCOMs(self):
+        global com1
+        global com2
+        print('test')
+        try:
+            com1 = serial.Serial('COM1', baudrate=self.e2.get(), timeout=0.5) # , stopbits=self.e3.get(), bytesize=self.e4.get()
+            # com1.stopbits = self.e3.get()
+            # com1.bytesize = self.e4.get()
+            com2 = serial.Serial('COM6', baudrate=self.e5.get(), timeout=0.5) # , stopbits=self.e6.get(), bytesize=self.e7.get()
+            # com2.stopbits = self.e6.get()
+            # com2.bytesize = self.e7.get()
+        except serial.SerialException:
+            print('king')
+            com1 = None
+            com2 = None
 
     def colorChange(self):
         if self.white == True:
@@ -290,10 +293,10 @@ def read(com1, com2):
     com2data = com2.readline()
     if com1data is not b'':
         testdaten2.append((str(com1data), "A"))
-        print(testdaten2)
+        # print(testdaten2)
     if com2data is not b'':
         testdaten2.append((str(com2data), "B"))
-        print(testdaten2)
+        # print(testdaten2)
 
 
 #testdaten2 = [("ABC","A"),("123","B"),("DEF","B"),("XYZ","A")]
@@ -305,5 +308,9 @@ app.resizable(width=True, height=True)
 app.configure(bg="black")
 while True:
     # app.update_idletasks()
-    read(SerialPy.com1, SerialPy.com2)
+    if com1 is not None and com2 is not None:
+        read(com1, com2)
+        print(com1.baudrate)
+    else:
+        print('kek')
     app.update()
